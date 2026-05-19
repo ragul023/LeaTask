@@ -1,0 +1,80 @@
+
+
+
+
+.delete-btn{
+  color: white;
+  background-color: red;
+  padding: 7px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 10%;
+  margin-right: 3px;
+  margin-left: 3px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.add-btn{
+  color: white;
+  background-color: rgb(3, 77, 70);
+  padding: 7px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 10%;
+  margin: 10px;
+  font-size: small;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+
+.field-card {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.label-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.label-input {
+  width: 70%;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.user-input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.edit-btn {
+  padding: 8px 15px;
+  border: none;
+  background-color: rgb(3, 77, 70);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: rgb(4,77, 70);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}

@@ -1,0 +1,18 @@
+.maincint{
+    display: flex;
+    justify-content: start;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    margin-bottom: 1%;
+}
+.logo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hdr{
+    font-size: larger;
+    padding: 3px;
+    margin: 3px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
