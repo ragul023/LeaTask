@@ -5,4 +5,4 @@ Always COmment the lines that you ARE CODING
 Make use of many branches as possible
 Any doubts na ellarutayum ketu pannunga da boys, Itha successful ah pannurom...
 
-backend using this command => npm install express mysql2 dotenv 
+backend using this command => npm install express mysql2 dotenv cors
