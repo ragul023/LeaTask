@@ -33,6 +33,23 @@ function Form() {
       )
     );
   };
+  // defining initial feilds for clearing forms
+  const initialFields = [
+  {
+    id: 1,
+    field_name: "name",
+    label: "Name",
+    value: "",
+    editing: false
+  },
+  {
+    id: 2,
+    field_name: "email",
+    label: "Email",
+    value: "",
+    editing: false
+  }
+];
 
   // Update the name of the label
   const updateLabel = (id, newLabel) => {
@@ -119,6 +136,9 @@ function Form() {
       console.log(data);
 
       alert("Form Submitted");
+      setFields(
+        initialFields
+      )
 
     } catch (error) {
 
