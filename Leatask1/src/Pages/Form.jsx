@@ -69,6 +69,7 @@ function Form() {
 
     const newField = {
       id: Date.now(),
+      
 
       field_name: `field_${fieldCount}`,
 
@@ -99,7 +100,7 @@ function Form() {
     try {
 
       const response = await fetch(
-        "http://localhost:8080/form",
+        "http://localhost:5000/form",
         {
           method: "POST",
 
