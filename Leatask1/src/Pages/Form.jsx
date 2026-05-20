@@ -100,7 +100,7 @@ function Form() {
     try {
 
       const response = await fetch(
-        "http://localhost:5000/form",
+        "http://localhost:5000/api/submit",
         {
           method: "POST",
 

@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.use("/form", formRoutes);
+app.use("/api", formRoutes);
 
 //set Listen port 
 const PORT = process.env.PORT || 5000;

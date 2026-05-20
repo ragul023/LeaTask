@@ -1,47 +1,66 @@
-const Form = require("../models/formModels");
+const {
+  createForm,
+  getAllForms
+} = require(
+  "../models/formModels"
+);
 
-//POST form controller
-const SubmitForm = async(req,res)=>{
-    try{
-        const fields = req.body;
-        for(const field of fields){
-            await new Promise((resolve,reject)=>{
-                Form.createForm(field,(error,result)=>{
-                    if(error){
-                        reject(error);
-                    }else{
-                        resolve(result);
-                    }
-                });
-            });
-        }
+// SUBMIT FORM
+const SubmitForm = async (
+  req,
+  res
+) => {
 
-        res.status(201).json({
-            success: true,
-            message: "Form Submitted Successfully"
-        });
-    }catch(error){
-        res.status(500).json({
-            success:false,
-            message:error.message
-        });
-    }
-}
+  try {
 
-//GET form controller
-const getforms = (req,res)=>{
-    Form.GetForm((error,result)=>{
-        if(error){
-            return res.status(500).json({
-                success: false,
-                message: error.message
-            });
-        }
-        res.status(200).json(results);
+    const fields = req.body;
+
+    const submissionId =
+      await createForm(fields);
+
+    res.status(201).json({
+      success: true,
+      submissionId
     });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false,
+      message:
+        "Form submission failed"
+    });
+
+  }
 };
 
-module.exports ={
-    SubmitForm,
-    getforms
-}
+// GET FORMS
+const getforms = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const forms =
+      await getAllForms();
+
+    res.json(forms);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      success: false
+    });
+
+  }
+};
+
+module.exports = {
+  SubmitForm,
+  getforms
+};

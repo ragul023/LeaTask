@@ -6,7 +6,7 @@ const router = express.Router();
 const {SubmitForm,getforms} = require("../controllers/formControllers");
 
 //POST
-router.post("/",SubmitForm);
+router.post("/submit",SubmitForm);
 //GET
 router.get("/",getforms);
 
