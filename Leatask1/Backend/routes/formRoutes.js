@@ -2,9 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  submitForm,
+  submitForm
 } = require("../controllers/formControllers");
 
-router.post("/submit", submitForm);
+router.post(
+  "/submit",
+  submitForm
+);
 
 module.exports = router;
