@@ -1,9 +1,25 @@
 import { useState } from "react";
 import Header from "../Components/Header";
-import '../CSS/Form.css'
+import "../CSS/Form.css";
 
 function Form() {
   const initialForms = {
+    code:[
+        {
+          id:1,
+          field_name:"clgname",
+          label:"College Name",
+          value:"",
+          editing:false
+        },
+        {
+          id:2,
+          field_name:"Clgcode",
+          label:"College Code",
+          value:"",
+          editing:false
+        }
+    ],
     college: [
       {
         id: 1,
@@ -31,11 +47,28 @@ function Form() {
       },
     ],
 
+
     department: [
       {
         id: 1,
-        field_name: "department_name",
-        label: "Department Name",
+        field_name: "department_code",
+        label: "Department code",
+        value: "",
+        editing: false,
+      },
+            {
+        id: 2,
+        field_name: "department_intake",
+        label: "Approvede Intake",
+        value: "",
+        editing: false,
+      },
+    ],
+        bank: [
+      {
+        id: 1,
+        field_name: "bank_name",
+        label: "Department Bank",
         value: "",
         editing: false,
       },
@@ -49,9 +82,7 @@ function Form() {
     setForms((prev) => ({
       ...prev,
       [section]: prev[section].map((field) =>
-        field.id === id
-          ? { ...field, editing: !field.editing }
-          : field
+        field.id === id ? { ...field, editing: !field.editing } : field,
       ),
     }));
   };
@@ -61,9 +92,7 @@ function Form() {
     setForms((prev) => ({
       ...prev,
       [section]: prev[section].map((field) =>
-        field.id === id
-          ? { ...field, label: newLabel }
-          : field
+        field.id === id ? { ...field, label: newLabel } : field,
       ),
     }));
   };
@@ -73,9 +102,7 @@ function Form() {
     setForms((prev) => ({
       ...prev,
       [section]: prev[section].map((field) =>
-        field.id === id
-          ? { ...field, value }
-          : field
+        field.id === id ? { ...field, value } : field,
       ),
     }));
   };
@@ -102,9 +129,7 @@ function Form() {
   const deleteField = (section, id) => {
     setForms((prev) => ({
       ...prev,
-      [section]: prev[section].filter(
-        (field) => field.id !== id
-      ),
+      [section]: prev[section].filter((field) => field.id !== id),
     }));
   };
 
@@ -113,16 +138,13 @@ function Form() {
     console.log(forms);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/submit",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(forms),
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(forms),
+      });
 
       const data = await response.json();
 
@@ -141,39 +163,27 @@ function Form() {
 
       {forms[section].map((field) => (
         <div key={field.id} className="field-card">
-
           <div className="label-section">
-
             {field.editing ? (
               <input
-              className="input"
+                className="input"
                 value={field.label}
-                onChange={(e) =>
-                  updateLabel(
-                    section,
-                    field.id,
-                    e.target.value
-                  )
-                }
+                onChange={(e) => updateLabel(section, field.id, e.target.value)}
               />
             ) : (
               <label>{field.label}</label>
             )}
 
             <button
-            className="edit-btn"
-              onClick={() =>
-                toggleEdit(section, field.id)
-              }
+              className="edit-btn"
+              onClick={() => toggleEdit(section, field.id)}
             >
               {field.editing ? "Save" : "Edit"}
             </button>
 
             <button
-            className="delete-btn"
-              onClick={() =>
-                deleteField(section, field.id)
-              }
+              className="delete-btn"
+              onClick={() => deleteField(section, field.id)}
             >
               Delete
             </button>
@@ -183,21 +193,12 @@ function Form() {
             type="text"
             placeholder={`Enter ${field.label}`}
             value={field.value}
-            onChange={(e) =>
-              updateValue(
-                section,
-                field.id,
-                e.target.value
-              )
-            }
+            onChange={(e) => updateValue(section, field.id, e.target.value)}
           />
         </div>
       ))}
 
-      <button
-      className="add-btn"
-        onClick={() => addField(section)}
-      >
+      <button className="add-btn" onClick={() => addField(section)}>
         Add Field
       </button>
     </div>
@@ -205,24 +206,16 @@ function Form() {
 
   return (
     <div>
-      <Header/>
-      {renderSection(
-        "COLLEGE DETAILS",
-        "college"
-      )}
+      <Header />
+      {renderSection("COLLEGE CODE","code")}
+      {renderSection("COLLEGE DETAILS", "college")}
 
-      {renderSection(
-        "HOSTEL DETAILS",
-        "hostel"
-      )}
+      {renderSection("HOSTEL DETAILS", "hostel")}
+      {renderSection("BANK DETAILS", "bank")}
 
-      {renderSection(
-        "DEPARTMENT DETAILS",
-        "department"
-      )}
+      {renderSection("DEPARTMENT DETAILS", "department")}
 
-      <button
-      className="submit-btn" onClick={submitForm}>
+      <button className="submit-btn" onClick={submitForm}>
         Submit Form
       </button>
     </div>

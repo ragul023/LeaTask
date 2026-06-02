@@ -1,8 +1,21 @@
 const db = require("../config/DataBase");
 
 const saveForm = async (forms) => {
-  const collegeCode = Date.now();
 
+const collegeCode = forms.code[1].value;
+const collegeName = forms.code[0].value; 
+await db.query(
+  `INSERT INTO colleges (college_code, college_name)
+   VALUES (?, ?)`,
+  [collegeCode, collegeName]
+);
+await db.query(
+  `INSERT INTO colleges (college_code, college_name)
+   VALUES (?, ?)
+   ON DUPLICATE KEY UPDATE
+   college_name = VALUES(college_name)`,
+  [collegeCode, collegeName]
+);
   // Save College Details
   for (const field of forms.college) {
     await db.query(
