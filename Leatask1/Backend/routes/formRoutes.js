@@ -1,13 +1,10 @@
 const express = require("express");
-
 const router = express.Router();
 
-//use controllers/formControllers
-const {SubmitForm,getforms} = require("../controllers/formControllers");
+const {
+  submitForm,
+} = require("../controllers/formControllers");
 
-//POST
-router.post("/",SubmitForm);
-//GET
-router.get("/",getforms);
+router.post("/submit", submitForm);
 
 module.exports = router;

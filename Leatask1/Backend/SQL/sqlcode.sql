@@ -1,10 +1,15 @@
-create database LEA_DB;
+CREATE TABLE form_fields (
 
-use LEA_DB;
-
-CREATE TABLE forms (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    field_name VARCHAR(100),
-    label_name VARCHAR(100),
-    field_value VARCHAR(100)
+
+    submission_id INT,
+
+    field_name VARCHAR(255),
+
+    field_label VARCHAR(255),
+
+    field_value TEXT,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
 );

@@ -1,29 +1,41 @@
-const DataBase = require("../config/DataBase");
+const db = require("../config/DataBase");
 
-//Insert form data to the table
-const createForm = (field,callback) =>{
-    const query =`
-        insert into forms
-        (field_name , label_name, field_value)
-        values(?,?,?)
-    `;
-    DataBase.query(query,
-        [
-            field.field_name,
-            field.label,
-            field.value,
-        ],
-        callback
+const saveForm = async (forms) => {
+  const collegeCode = Date.now();
+
+  // Save College Details
+  for (const field of forms.college) {
+    await db.query(
+      `INSERT INTO collegedetails
+      (college_code, field_lable, field_value)
+      VALUES (?, ?, ?)`,
+      [collegeCode, field.label, field.value]
     );
-};
+  }
 
-//Get the form data to the table
-const GetForm = (callback)=>{
-    const query = "select * form forms";
-    DataBase.query(query,callback);
+  // Save Hostel Details
+  for (const field of forms.hostel) {
+    await db.query(
+      `INSERT INTO hosteldetails
+      (college_code, field_lable, single_value)
+      VALUES (?, ?, ?)`,
+      [collegeCode, field.label, field.value]
+    );
+  }
+
+  // Save Department Details
+  for (const field of forms.department) {
+    await db.query(
+      `INSERT INTO branchdetails
+      (college_code, branch_code, approved_intake)
+      VALUES (?, ?, ?)`,
+      [collegeCode, field.value, 0]
+    );
+  }
+
+  return true;
 };
 
 module.exports = {
-    createForm,
-    GetForm
+  saveForm,
 };
