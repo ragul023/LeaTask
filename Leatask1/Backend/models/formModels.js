@@ -36,6 +36,17 @@ await db.query(
     );
   }
 
+  // Bank Details
+  for(const field of forms.bank){
+    await db.query(
+      `INSERT INTO bankdetails
+      (college_code ,field_lable ,field_value )
+      VALUES(?,?,?)
+      `,
+      [collegeCode,field.label,field.value]
+    );
+  }
+
   // Save Department Details
   for (const field of forms.department) {
     await db.query(
