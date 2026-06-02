@@ -17,14 +17,77 @@ function Form() {
       label: "Email",
       value: "",
       editing: false
-    }
+    },
+    {
+      id: 3,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },
+    {
+      id: 4,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 5,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 6,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 7,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 8,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 9,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 10,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 11,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },{
+      id: 12,
+      field_name: "name",
+      label: "Name",
+      value: "",
+      editing: false
+    },
+
   ]);
 
   // To enablwe edit mode
   const toggleEdit = (id) => {
     setFields(
       fields.map((field) =>
-        field.id === id
+        field.id === idki
           ? {
               ...field,
               editing: !field.editing
