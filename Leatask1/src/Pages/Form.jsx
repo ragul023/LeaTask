@@ -1,225 +1,231 @@
 import { useState } from "react";
-import "../CSS/Form.css";
 import Header from "../Components/Header";
+import '../CSS/Form.css'
 
 function Form() {
-  const [fields, setFields] = useState([
-    {
-      id: 1,
-      field_name: "name",
-      label: "Name",
-      value: "",
-      editing: false
-    },
-    {
-      id: 2,
-      field_name: "email",
-      label: "Email",
-      value: "",
-      editing: false
-    }
-  ]);
+  const initialForms = {
+    college: [
+      {
+        id: 1,
+        field_name: "name",
+        label: "Name",
+        value: "",
+        editing: false,
+      },
+      {
+        id: 2,
+        field_name: "email",
+        label: "Email",
+        value: "",
+        editing: false,
+      },
+    ],
 
-  // To enablwe edit mode
-  const toggleEdit = (id) => {
-    setFields(
-      fields.map((field) =>
-        field.id === id
-          ? {
-              ...field,
-              editing: !field.editing
-            }
-          : field
-      )
-    );
+    hostel: [
+      {
+        id: 1,
+        field_name: "room_no",
+        label: "Room No",
+        value: "",
+        editing: false,
+      },
+    ],
+
+    department: [
+      {
+        id: 1,
+        field_name: "department_name",
+        label: "Department Name",
+        value: "",
+        editing: false,
+      },
+    ],
   };
 
-  // Update the name of the label
-  const updateLabel = (id, newLabel) => {
-    setFields(
-      fields.map((field) =>
+  const [forms, setForms] = useState(initialForms);
+
+  // Toggle Edit
+  const toggleEdit = (section, id) => {
+    setForms((prev) => ({
+      ...prev,
+      [section]: prev[section].map((field) =>
         field.id === id
-          ? {
-              ...field,
-              label: newLabel
-            }
+          ? { ...field, editing: !field.editing }
           : field
-      )
-    );
+      ),
+    }));
   };
 
-  // Update the input value
-  const updateValue = (id, newValue) => {
-    setFields(
-      fields.map((field) =>
+  // Update Label
+  const updateLabel = (section, id, newLabel) => {
+    setForms((prev) => ({
+      ...prev,
+      [section]: prev[section].map((field) =>
         field.id === id
-          ? {
-              ...field,
-              value: newValue
-            }
+          ? { ...field, label: newLabel }
           : field
-      )
-    );
+      ),
+    }));
   };
 
-  // to add new feild
-  const addField = () => {
+  // Update Value
+  const updateValue = (section, id, value) => {
+    setForms((prev) => ({
+      ...prev,
+      [section]: prev[section].map((field) =>
+        field.id === id
+          ? { ...field, value }
+          : field
+      ),
+    }));
+  };
 
-    const fieldCount = fields.length + 1;
+  // Add Field
+  const addField = (section) => {
+    const fieldCount = forms[section].length + 1;
 
     const newField = {
       id: Date.now(),
-
       field_name: `field_${fieldCount}`,
-
       label: `Field ${fieldCount}`,
-
       value: "",
-
-      editing: false
+      editing: false,
     };
 
-    setFields([...fields, newField]);
+    setForms((prev) => ({
+      ...prev,
+      [section]: [...prev[section], newField],
+    }));
   };
 
-  // used to delete feild
-  const deleteField = (id) => {
-    setFields(
-      fields.filter(
+  // Delete Field
+  const deleteField = (section, id) => {
+    setForms((prev) => ({
+      ...prev,
+      [section]: prev[section].filter(
         (field) => field.id !== id
-      )
-    );
+      ),
+    }));
   };
 
-  // MOck Backend api
+  // Submit
   const submitForm = async () => {
-
-    console.log(fields);
+    console.log(forms);
 
     try {
-
       const response = await fetch(
-        "http://localhost:5000/form",
+        "http://localhost:5000/api/submit",
         {
           method: "POST",
-
           headers: {
-            "Content-Type":
-              "application/json"
+            "Content-Type": "application/json",
           },
-
-          body: JSON.stringify(fields)
+          body: JSON.stringify(forms),
         }
       );
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       console.log(data);
-
       alert("Form Submitted");
 
+      setForms(initialForms);
     } catch (error) {
-
       console.log(error);
-
     }
   };
 
-  return (
-    <>
+  const renderSection = (title, section) => (
+    <div className="section">
+      <h2>{title}</h2>
 
-    <Header/>
+      {forms[section].map((field) => (
+        <div key={field.id} className="field-card">
 
-      {fields.map((field) => (
-        <div
-          key={field.id}
-          className="field-card"
-        >
-
-          {/* //for the label section  */}
           <div className="label-section">
 
             {field.editing ? (
               <input
-                className="label-input"
+              className="input"
                 value={field.label}
                 onChange={(e) =>
                   updateLabel(
+                    section,
                     field.id,
                     e.target.value
                   )
                 }
               />
             ) : (
-              <label className="label">
-                {field.label}
-              </label>
+              <label>{field.label}</label>
             )}
 
-            <div className="btn-group">
+            <button
+            className="edit-btn"
+              onClick={() =>
+                toggleEdit(section, field.id)
+              }
+            >
+              {field.editing ? "Save" : "Edit"}
+            </button>
 
-              <button
-                className="edit-btn"
-                onClick={() =>
-                  toggleEdit(field.id)
-                }
-              >
-                {field.editing
-                  ? "Save"
-                  : "Edit"}
-              </button>
-
-              <button
-                className="delete-btn"
-                onClick={() =>
-                  deleteField(field.id)
-                }
-              >
-                Delete
-              </button>
-
-            </div>
-
+            <button
+            className="delete-btn"
+              onClick={() =>
+                deleteField(section, field.id)
+              }
+            >
+              Delete
+            </button>
           </div>
 
-          {/* to get the user input */}
           <input
             type="text"
-            className="user-input"
             placeholder={`Enter ${field.label}`}
             value={field.value}
             onChange={(e) =>
               updateValue(
+                section,
                 field.id,
                 e.target.value
               )
             }
           />
-
         </div>
       ))}
 
-      {/* //buttons to add feilds */}
-      <div className="bottom-buttons">
+      <button
+      className="add-btn"
+        onClick={() => addField(section)}
+      >
+        Add Field
+      </button>
+    </div>
+  );
 
-        <button
-          className="add-btn"
-          onClick={addField}
-        >
-          Add Field
-        </button>
-{/* //button to submit form */}
-        <button
-          className="submit-btn"
-          onClick={submitForm}
-        >
-          Submit Form
-        </button>
+  return (
+    <div>
+      <Header/>
+      {renderSection(
+        "COLLEGE DETAILS",
+        "college"
+      )}
 
-      </div>
+      {renderSection(
+        "HOSTEL DETAILS",
+        "hostel"
+      )}
 
-   </>
+      {renderSection(
+        "DEPARTMENT DETAILS",
+        "department"
+      )}
+
+      <button
+      className="submit-btn" onClick={submitForm}>
+        Submit Form
+      </button>
+    </div>
   );
 }
 
