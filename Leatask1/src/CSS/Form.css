@@ -1,0 +1,81 @@
+.delete-btn {
+  color: white;
+  background-color: red;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+.add-btn {
+  color: white;
+  background-color: rgb(3, 77, 70);
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.field-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+}
+
+.label-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.label {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.label-input {
+  width: 60%;
+  padding: 8px;
+}
+
+.user-input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box; /* important */
+}
+
+.edit-btn {
+  padding: 8px 12px;
+  border: none;
+  background-color: rgb(3, 77, 70);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: rgb(3, 77, 70);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  margin-bottom: 20px;
+  color: rgb(3, 77, 70);
+}
