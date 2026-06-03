@@ -6,7 +6,8 @@ const saveForm = async (data) => {
   try {
     await connection.beginTransaction();
 
-    const collegeCode = 5465
+    const collegeCode = 94949
+    const CollegeName = "ACGCE"
 
     await connection.query(
       `INSERT INTO colleges
@@ -14,7 +15,7 @@ const saveForm = async (data) => {
       VALUES (?,?)`,
       [
         collegeCode,
-        "College"
+        CollegeName
       ]
     );
 

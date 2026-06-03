@@ -179,7 +179,7 @@ const updateBranch = (
     console.log(data);
     alert("Form Submitted");
 
-    setForms(initialForms);
+    // setForms(initialForms);
 
     setBranches([
       {
