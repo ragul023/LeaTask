@@ -1,12 +1,16 @@
 require("dotenv").config();
 
-const express = require("express");
 const cors = require("cors");
-
+const express = require("express");
 const app = express();
+
+const bookletRoutes = require("./routes/bookletRoutes.js");
+
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/booklet",bookletRoutes);
 
 app.use("/api", require("./routes/formRoutes"));
 
