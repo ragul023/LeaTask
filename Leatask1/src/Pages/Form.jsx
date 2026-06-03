@@ -14,7 +14,11 @@ function Form() {
   }
 ]);
   
-  const initialForms = {
+const initialForms = {
+  essentials:[
+    {id:1,field_name:"college_code",label:"College Code",value:"",editing:false},
+    {id:2,field_name:"college_name",label:"College Name",value:"",editing:false}
+  ],
   college: [
     { id: 1, field_name: "principal", label: "Dean/Principal", value: "", editing: false },
     { id: 2, field_name: "address", label: "Address", value: "", editing: false },
@@ -46,7 +50,6 @@ function Form() {
     { id: 4, field_name: "mess_bill", label: "Mess Bill (Per annum)", boys: "", girls: "", editing: false },
     { id: 5, field_name: "room_rent", label: "Room Rent (Per annum)", boys: "", girls: "", editing: false },
     { id: 6, field_name: "electricity", label: "Electricity Charges (Per annum)", boys: "", girls: "", editing: false },
-
     { id: 7, field_name: "caution", label: "Caution Deposit", value: "", editing: false },
     { id: 8, field_name: "establishment", label: "Establishment Charges", value: "", editing: false },
     { id: 9, field_name: "admission", label: "Admission Fees", value: "", editing: false },
@@ -54,9 +57,8 @@ function Form() {
     { id: 11, field_name: "min_transport", label: "Min Transport Charges (Per annum)", value: "", editing: false },
     { id: 12, field_name: "max_transport", label: "Max Transport Charges (Per annum)", value: "", editing: false },
   ],
-  department:[branches]
 
-
+  department: []
 };
 
   const [forms, setForms] = useState(initialForms);
@@ -162,27 +164,49 @@ const updateBranch = (
 
   // Submit
   const submitForm = async () => {
-    console.log(forms);
-
-    try {
-      const response = await fetch("http://localhost:5000/api/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(forms),
-      });
-
-      const data = await response.json();
-
-      console.log(data);
-      alert("Form Submitted");
-
-      setForms(initialForms);
-    } catch (error) {
-      console.log(error);
-    }
+  const formData = {
+    ...forms,
+    department: branches,
   };
+
+  console.log(formData);
+
+  try {
+    const response = await fetch("http://localhost:5000/api/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+
+   const data = await response.json();
+   console.log(data);
+   const clgcode = data.code;
+
+
+    alert("Form Submitted");
+    window.location.href = `http://localhost:5000/api/booklet/download/${data.code}`;
+    alert("PDF GENERATEd");
+
+
+    
+
+    setBranches([
+      {
+        id: 1,
+        branch_code: "",
+        approved_intake: "",
+        course_start_year: "",
+        nba_accredited: "",
+        valid_year: "",
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const renderSection = (title, section) => (
     <div className="section">
@@ -234,7 +258,8 @@ const updateBranch = (
   return (
     <div>
       <Header />
-      {renderSection("COLLEGE CODE","code")}
+      {renderSection("COLLEGE IDENTITY","essentials")}
+    
       {renderSection("COLLEGE DETAILS", "college")}
 
       {renderSection(

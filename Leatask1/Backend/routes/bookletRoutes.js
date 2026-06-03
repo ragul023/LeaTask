@@ -8,4 +8,4 @@ router.get(
   downloadBooklet
 );
  
-module.exports = router;
+module.exports = router; 
