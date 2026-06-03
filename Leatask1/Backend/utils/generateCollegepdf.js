@@ -1,13 +1,7 @@
 const PDFDocument = require("pdfkit");
 
 const generatePDF = (
-  res,
-  college_name,
-  collegeCode,
-  collegeDetails,
-  bankdetails,
-  hostelDetails,
-  branchDetails
+  res,college_name,collegeCode,collegeDetails,bankdetails,hostelDetails,branchDetails
 ) => {
   const doc = new PDFDocument({
     size: "A4",
@@ -24,30 +18,19 @@ const generatePDF = (
 
 
   const PAGE_WIDTH = 595;
-const MARGIN = 20;
-const GAP = 15;
+  const MARGIN = 20;
+  const GAP = 15;
+  const CONTENT_WIDTH = PAGE_WIDTH - (MARGIN * 2);
+  const COLUMN_WIDTH =(CONTENT_WIDTH - GAP) / 2;
+  const LEFT_X = MARGIN;
+  const RIGHT_X =LEFT_X +COLUMN_WIDTH +GAP;
+  const TOP_Y = 70;
+  const TOP_TABLE_HEIGHT = 280;
+  const BOTTOM_TABLE_HEIGHT = 350;
 
-const CONTENT_WIDTH = PAGE_WIDTH - (MARGIN * 2);
-
-const COLUMN_WIDTH =
-  (CONTENT_WIDTH - GAP) / 2;
-
-const LEFT_X = MARGIN;
-
-const RIGHT_X =
-  LEFT_X +
-  COLUMN_WIDTH +
-  GAP;
-
-const TOP_Y = 70;
-
-const TOP_TABLE_HEIGHT = 280;
-const BOTTOM_TABLE_HEIGHT = 300;
-
-  // ===========================
   // Helpers
-  // ===========================
 
+  
   function getTableFontSize(
   rows,
   labelWidth,
@@ -60,46 +43,25 @@ const BOTTOM_TABLE_HEIGHT = 300;
 
   while (size >= minSize) {
     let totalHeight = 0;
-
     rows.forEach((row) => {
-
-      const value =
-        row.field_value ??
-        row.single_value ??
-        "";
-
-      const labelHeight =
-        doc.fontSize(size)
-          .heightOfString(
-            String(row.field_lable),
-            {
+      const value =row.field_value ??row.single_value ??"";
+      const labelHeight =doc.fontSize(size).heightOfString(String(row.field_lable),{
               width: labelWidth - 8
             }
           );
-
-      const valueHeight =
-        doc.fontSize(size)
-          .heightOfString(
-            String(value),
-            {
+      const valueHeight =doc.fontSize(size).heightOfString(String(value),{
               width: valueWidth - 8
             }
           );
-
-      totalHeight +=
-        Math.max(
+      totalHeight +=Math.max(
           labelHeight,
-          valueHeight
-        ) + 10;
+          valueHeight) + 10;
     });
-
     if (totalHeight <= maxHeight) {
       return size;
     }
-
     size--;
   }
-
   return minSize;
 }
 
@@ -111,30 +73,20 @@ const BOTTOM_TABLE_HEIGHT = 300;
   fontSize
 ) {
 
-  const labelHeight =
-    doc.fontSize(fontSize)
-      .heightOfString(
-        String(label),
+  const labelHeight =doc.fontSize(fontSize).heightOfString(String(label),
         {
           width: labelWidth - 8
         }
       );
-
-  const valueHeight =
-    doc.fontSize(fontSize)
-      .heightOfString(
-        String(value),
+  const valueHeight =doc.fontSize(fontSize).heightOfString(String(value),
         {
           width: valueWidth - 8
         }
       );
-
   return Math.max(
-    24,
-    Math.max(
+    22,Math.max(
       labelHeight,
-      valueHeight
-    ) + 10
+      valueHeight) + 10
   );
 }
 
@@ -149,25 +101,13 @@ const BOTTOM_TABLE_HEIGHT = 300;
 ) {
 
   doc.rect(x, y, width, height).stroke();
-
-  const textHeight =
-    doc.fontSize(fontSize)
-      .heightOfString(
-        String(text ?? ""),
+  const textHeight =doc.fontSize(fontSize).heightOfString(String(text ?? ""),
         {
           width: width - 8
         }
       );
-
-  const textY =
-    y + (height - textHeight) / 2;
-
-  doc
-    .fontSize(fontSize)
-    .text(
-      String(text ?? ""),
-      x + 4,
-      textY,
+  const textY =y + (height - textHeight) / 2;
+  doc.fontSize(fontSize).text(String(text ?? ""),x + 4,textY,
       {
         width: width - 8,
         align
@@ -175,42 +115,22 @@ const BOTTOM_TABLE_HEIGHT = 300;
     );
 }
 
-  // ===========================
   // Header
-  // ===========================
 
   doc.fontSize(14).font("Helvetica-Bold");
 
-  drawCell(
-  20,
-  20,
-  40,
-  40,
-  collegeCode,
-  10,
-  "center"
-);
+  drawCell(20,20,40,40,collegeCode,10,"center");
 
-drawCell(
-  70,
-  20,
-  505,
-  40,
-  college_name[0].college_name,
-  12,
-  "center"
-);
+  drawCell(70,20,505,40,college_name[0].college_name,12,"center");
 
-  // ===========================
   // COLLEGE DETAILS TABLE
-  // ===========================
   
   doc.font('Times-Roman');
 
   const LABEL_WIDTH = 90;
-const VALUE_WIDTH = 180;
-
-const collegeFont =
+  const VALUE_WIDTH = 180;
+  const collegeFont =
+  
   getTableFontSize(
     collegeDetails,
     LABEL_WIDTH,
@@ -218,10 +138,8 @@ const collegeFont =
     TOP_TABLE_HEIGHT
   );
 
-let collegeY = TOP_Y;
-
-collegeDetails.forEach((row) => {
-
+  let collegeY = TOP_Y;
+  collegeDetails.forEach((row) => {
   const rowHeight =
     getRowHeight(
       row.field_lable,
@@ -231,149 +149,60 @@ collegeDetails.forEach((row) => {
       collegeFont
     );
 
-  drawCell(
-    LEFT_X,
-    collegeY,
-    LABEL_WIDTH,
-    rowHeight,
-    row.field_lable,
-    collegeFont
-  );
-
-  drawCell(
-    LEFT_X + LABEL_WIDTH,
-    collegeY,
-    VALUE_WIDTH,
-    rowHeight,
-    row.field_value,
-    collegeFont
-  );
-
+  drawCell(LEFT_X,collegeY,LABEL_WIDTH,rowHeight,row.field_lable,collegeFont);
+  drawCell(  LEFT_X + LABEL_WIDTH,collegeY,VALUE_WIDTH,rowHeight,row.field_value,collegeFont);
   collegeY += rowHeight;
 });
-  // ===========================
+
   // HOSTEL TABLE
-  // ===========================
 
-  
-  // ===========================
-  // BRANCH TABLE
-  // ===========================
   const HOSTEL_LABEL = 110;
-const HOSTEL_BOYS = 80;
-const HOSTEL_GIRLS = 80;
-  const hostelFont =
-  getTableFontSize(
-    hostelDetails,
-    120,
-    120,
-    BOTTOM_TABLE_HEIGHT
-  );
+  const HOSTEL_BOYS = 80;
+  const HOSTEL_GIRLS = 80;
+  const hostelFont =getTableFontSize(hostelDetails,HOSTEL_LABEL,HOSTEL_BOYS + HOSTEL_GIRLS,BOTTOM_TABLE_HEIGHT );
 
-let hostelY = collegeY + 20;
+  let hostelY = collegeY + 20;
 
-drawCell(
-  LEFT_X,
-  hostelY,
-  HOSTEL_LABEL,
-  30,
-  "Field",
-  hostelFont,
-  "center"
-);
+  drawCell(LEFT_X,hostelY,HOSTEL_LABEL,30,"Field",hostelFont,"center");
+  drawCell(LEFT_X + HOSTEL_LABEL,hostelY,HOSTEL_BOYS,30,"Boys",hostelFont,"center");
+  drawCell(LEFT_X + HOSTEL_LABEL + HOSTEL_BOYS,hostelY,HOSTEL_GIRLS,30,"Girls",hostelFont,"center");
 
-drawCell(
-  LEFT_X + HOSTEL_LABEL,
-  hostelY,
-  HOSTEL_BOYS,
-  30,
-  "Boys",
-  hostelFont,
-  "center"
-);
+  hostelY += 30;
+  hostelDetails.forEach((row) => {
 
-drawCell(
-  LEFT_X + HOSTEL_LABEL + HOSTEL_BOYS,
-  hostelY,
-  HOSTEL_GIRLS,
-  30,
-  "Girls",
-  hostelFont,
-  "center"
-);
+  const valueText =row.single_value ? row.single_value : `${row.boys_value || ""} ${row.girls_value || ""}`;
 
-hostelY += 30;
-
-hostelDetails.forEach((row) => {
+  const rowHeight = getRowHeight( row.field_lable, valueText,HOSTEL_LABEL,HOSTEL_BOYS + HOSTEL_GIRLS,hostelFont);
 
   if (row.single_value) {
-
-    drawCell(
-      LEFT_X,
-      hostelY,
-      HOSTEL_LABEL,
-      30,
-      row.field_lable,
-      hostelFont
-    );
-
-    drawCell(
-      LEFT_X + HOSTEL_LABEL,
-      hostelY,
-      HOSTEL_BOYS+HOSTEL_GIRLS,
-      30,
-      row.single_value,
-      hostelFont
-    );
+    
+    drawCell(LEFT_X,hostelY,HOSTEL_LABEL,rowHeight,row.field_lable,hostelFont,"left");
+    drawCell(LEFT_X + HOSTEL_LABEL,hostelY,HOSTEL_BOYS + HOSTEL_GIRLS,rowHeight,row.single_value,hostelFont);
 
   } else {
 
-    drawCell(
-      LEFT_X,
-      hostelY,
-      HOSTEL_LABEL,
-      30,
-      row.field_lable,
-      hostelFont
-    );
+    drawCell(LEFT_X,hostelY,HOSTEL_LABEL,rowHeight,row.field_lable,hostelFont,"left");
 
-    drawCell(
-      LEFT_X + HOSTEL_LABEL,
-      hostelY,
-      HOSTEL_BOYS,
-      30,
-      row.boys_value,
-      hostelFont
-    );
+    drawCell(LEFT_X + HOSTEL_LABEL,hostelY,HOSTEL_BOYS,rowHeight,row.boys_value,hostelFont);
 
-   drawCell(
-  LEFT_X + HOSTEL_LABEL + HOSTEL_BOYS,
-  hostelY,
-  HOSTEL_GIRLS,
-  30,
-  row.girls_value,
-  hostelFont
-);
+    drawCell(LEFT_X + HOSTEL_LABEL + HOSTEL_BOYS,hostelY,HOSTEL_GIRLS,rowHeight,row.girls_value,hostelFont);
   }
-
-  hostelY += 30;
+  hostelY += rowHeight;
 });
 
+  // BRANCH TABLE
 
-const bankFont =
-  getTableFontSize(
+  const bankFont =getTableFontSize(
     bankdetails,
     LABEL_WIDTH,
     VALUE_WIDTH,
     TOP_TABLE_HEIGHT
   );
 
-let bankY = TOP_Y;
+  let bankY = TOP_Y;
 
-bankdetails.forEach((row) => {
-
-  const rowHeight =
-    getRowHeight(
+  bankdetails.forEach((row) => {
+  const rowHeight =getRowHeight(
       row.field_lable,
       row.field_value,
       LABEL_WIDTH,
@@ -381,95 +210,35 @@ bankdetails.forEach((row) => {
       bankFont
     );
 
-  drawCell(
-    RIGHT_X,
-    bankY,
-    LABEL_WIDTH,
-    rowHeight,
-    row.field_lable,
-    bankFont
-  );
+  drawCell(RIGHT_X,bankY,LABEL_WIDTH,rowHeight,row.field_lable,bankFont);
 
-  drawCell(
-    RIGHT_X + LABEL_WIDTH,
-    bankY,
-    VALUE_WIDTH,
-    rowHeight,
-    row.field_value,
-    bankFont
-  );
-
+  drawCell(RIGHT_X + LABEL_WIDTH,bankY,VALUE_WIDTH,rowHeight,row.field_value,bankFont);
   bankY += rowHeight;
 });
 
-let branchY = bankY + 20;
-const cols = [
-  35,
-  45,
-  50,
-  50,
-  45,
-  45
-];
+  let branchY = bankY + 20;
+  const cols = [35,45,50,50,45,45];
+  const headers = ["S No","Branch Code","Approved Intake","Year of Starting of Course","Whether NBA Accredited","Accreditation Valid Upto"];
 
-const headers = [
-  "SL_No",
-  " Branch  Code",
-  "Approved Intake",
-  "Year of Starting of Course",
-  "Whether NBA Accredited",
-  "Accreditation Valid Upto"
-];
-
-let headerX = RIGHT_X;
-doc.font("Helvetica-Bold");
-headers.forEach((head, i) => {
-
-  drawCell(
-    headerX,
-    branchY,
-    cols[i],
-    45,
-    head,
-    10,
-    "center"
-  );
-
+  let headerX = RIGHT_X;
+  doc.font("Helvetica-Bold");
+  headers.forEach((head, i) => {
+  drawCell(headerX,branchY,cols[i],45,head,8,"center");
   headerX += cols[i];
 });
 
-branchY += 45;
-doc.font('Times-Roman');
-branchDetails.forEach(
+  branchY += 45;
+  doc.font('Times-Roman');
+  branchDetails.forEach(
   (branch, index) => {
-
-    const values = [
-      index + 1,
-      branch.branch_code,
-      branch.approved_intake,
-      branch.course_start_year,
-      branch.nba_accredited,
-      branch.valid_year
-    ];
-
+    const values = [index + 1,branch.branch_code,branch.approved_intake,branch.course_start_year,branch.nba_accredited,branch.valid_year];
     let rowX = RIGHT_X;
-
     values.forEach(
       (value, i) => {
-
-        drawCell(
-  rowX,
-  branchY,
-  cols[i],
-  20,
-  value,
-  10
-);
-
+        drawCell(rowX,branchY,cols[i],20,value,10);
         rowX += cols[i];
       }
     );
-
     branchY += 20;
   }
 );
