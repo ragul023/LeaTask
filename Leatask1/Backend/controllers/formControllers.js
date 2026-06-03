@@ -5,8 +5,9 @@ const submitForm = async (req, res) => {
 
     const result =
       await formModel.saveForm(req.body);
+      console.log(result)
 
-    res.status(200).json(result);
+   return res.status(200).json(result);
 
   } catch (error) {
 

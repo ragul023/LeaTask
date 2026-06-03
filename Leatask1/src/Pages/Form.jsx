@@ -15,6 +15,10 @@ function Form() {
 ]);
   
 const initialForms = {
+  essentials:[
+    {id:1,field_name:"college_code",label:"College Code",value:"",editing:false},
+    {id:2,field_name:"college_name",label:"College Name",value:"",editing:false}
+  ],
   college: [
     { id: 1, field_name: "principal", label: "Dean/Principal", value: "", editing: false },
     { id: 2, field_name: "address", label: "Address", value: "", editing: false },
@@ -112,7 +116,9 @@ const initialForms = {
   const deleteField = (section, id) => {
     setForms((prev) => ({
       ...prev,
-      [section]: prev[section].filter((field) => field.id !== id),
+      [section]: prev[section].filter(
+        (field) => field.id !== id
+      ),
     }));
   };
 
@@ -174,10 +180,15 @@ const updateBranch = (
       body: JSON.stringify(formData),
     });
 
-    const data = await response.text();
 
-    console.log(data);
+   const data = await response.json();
+   console.log(data);
+   const clgcode = data.code;
+
+
     alert("Form Submitted");
+    window.location.href = `http://localhost:5000/api/booklet/download/${data.code}`;
+    alert("PDF GENERATEd");
 
     // setForms(initialForms);
 
@@ -246,6 +257,7 @@ const updateBranch = (
   return (
     <div>
       <Header />
+      {renderSection("COLLEGE IDENTITY","essentials")}
     
       {renderSection("COLLEGE DETAILS", "college")}
 

@@ -6,15 +6,16 @@ const saveForm = async (data) => {
   try {
     await connection.beginTransaction();
 
-    const collegeCode = 5467
-
+    const collegeCode = data.essentials[0].value
+    const college = data.essentials[1].value
+    console.log(data.essentials[0].value)
     await connection.query(
       `INSERT INTO colleges
       (college_code,college_name)
       VALUES (?,?)`,
       [
         collegeCode,
-        CollegeName
+        college
       ]
     );
 
@@ -106,7 +107,8 @@ const saveForm = async (data) => {
 
     return {
       success: true,
-      message: "Saved Successfully"
+      message: "Saved Successfully",
+      code:collegeCode
     };
 
   } catch (error) {
